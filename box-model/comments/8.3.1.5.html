@@ -1,0 +1,246 @@
+<html lang="en"><head> <meta charset="utf-8"> <title>An exception to margin collapse for elements with clearance | Annotated CSS Spec </title> <meta name="description" content="Broaden your CSS knowledge by reading a specification enriched with explanations and examples."> <meta name="viewport" content="width=device-width,initial-scale=1"> <meta name="robots" content="noindex"> <meta property="og:title" content="Annotated CSS Spec"> <meta property="og:url" content="https://annotatedcss.com"> <meta property="og:description" content="Broaden your CSS knowledge by reading an annotated specification!"> <meta property="og:image" content="/images/logo.png"> <meta property="og:type" content="website"> <meta property="og:image:width" content="300"> <meta property="og:image:height" content="300"> <link href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Open+Sans:ital,wght@0,400;0,600;1,300;1,400&amp;display=swap" rel="stylesheet"> <link rel="stylesheet" href="/styles/main.css"> <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16"> <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32"> <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96"> </head> <body> <header> <svg class="logo" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 41.01 41.01"><g class="marginBox" fill="none" stroke="#ececfb" stroke-width="2.646"><path d="M1.323 7.938V1.323h6.615M1.323 11.898v6.614M1.323 22.488v6.614M7.937 39.688H1.323v-6.615M39.688 7.938V1.323h-6.615M39.688 11.898v6.614M39.688 22.488v6.614M33.073 39.688h6.614v-6.615M11.906 1.318h6.615M22.49 1.318h6.614M11.906 39.688h6.615M22.49 39.688h6.614"></path></g><rect class="borderBox" ry="0" height="25.261" width="25.261" y="7.87" x="7.875" opacity=".99" fill="none" stroke="#ececfb" stroke-width="2.52" stroke-linecap="round"></rect><rect class="contentBox" ry="0" height="14.552" width="14.552" y="13.23" x="13.229" opacity=".99" fill="#c7a6e7ff"></rect></svg> <a class="title" href="/">Annotated CSS&nbsp;Spec </a><a class="help-link" href="/about">?</a> </header> <main> <article class="spec-comment open" data-comment-on="/box-model.html"> <div class="content"> <div class="comment-identifier"> This comment relates to the following words from Section&nbsp;8.3.1 of CSS&nbsp;2.2: <blockquote> If the top and bottom margins of an element with <a href="https://www.w3.org/TR/CSS22/visuren.html#clearance">clearance</a> are adjoining, its margins collapse with the adjoining margins of following siblings but that resulting margin does not collapse with the bottom margin of the parent block. </blockquote> </div> <p> If you’re not familiar with clearance, I recommend that you first read a <a href="/box-model/comments/8.3.1.10">related comment</a>, which contains an explanation of the concept. </p> <p> Let’s tackle this fragment of the spec by dissecting it into smaller parts and analysing each. </p> <h3> Part 1 </h3> <blockquote> If the top and bottom margins of an element with clearance are adjoining (…) </blockquote> <p> Let’s consider an example based on this HTML: </p> <pre><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>parent<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>float<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Float<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>non-floated<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Box 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>non-floated<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Box 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre> <p> We will set <code class="language-css">float: right</code> on the first child element. We will also set <code class="language-css">clear: right</code> on Box&nbsp;2. </p> <p>This is the effect:</p> <div id="ex-8.3.1.5-i" class="example-visualization"> <style> #ex-8\.3\.1\.5-i .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.5-i .parent {
+          background-color: #dfdff9;
+        }
+
+        #ex-8\.3\.1\.5-i .float {
+          background-color: #5c004eaf;
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+        }
+
+        #ex-8\.3\.1\.5-i .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        }
+
+        #ex-8\.3\.1\.5-i .clearable {
+          clear: both;
+        } </style> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated clearable">Box 2</div> </div> </div> </div> <p> In this example, Box&nbsp;2 represents an element with clearance, i.e. with extra space above the top margin. The browser had to introduce that space to ensure that Box&nbsp;2 is below the float. </p> <p> Box&nbsp;2 includes content, which separates the top and the bottom margins of the box. We will remove that content. As a result, the two margins will be adjoining, so they will collapse. In this way, Box&nbsp;2 will satisfy the conditions listed by the spec: <q>If the top and bottom margins of an element with clearance are adjoining</q>. </p> <p> Box&nbsp;2 won’t be visible now, but luckily, CSS has the <code class="language-css">outline</code> property. An outline is amazingly useful here because it allows us to see where the box is, without interacting with it. </p> <div id="ex-8.3.1.5-ii" class="example-visualization"> <style> #ex-8\.3\.1\.5-ii .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.5-ii .parent {
+          background-color: #dfdff9;
+        }
+
+        #ex-8\.3\.1\.5-ii .float {
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+          background-color: #5c004eaf;
+        }
+
+        #ex-8\.3\.1\.5-ii .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        }
+
+        #ex-8\.3\.1\.5-ii .self-collapsing {
+          height: 0;
+        }
+
+        #ex-8\.3\.1\.5-ii .clearable {
+          clear: both;
+        }
+
+        #ex-8\.3\.1\.5-ii
+          .show-outline:checked
+          ~ .example-frame
+          .parent
+          .non-floated.self-collapsing.clearable {
+          outline: 2px dotted red;
+        } </style> <input id="ex-8.3.1.5-ii-show-outline" class="show-outline" type="checkbox"><label for="ex-8.3.1.5-ii-show-outline">Show outline of Box&nbsp;2</label> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated self-collapsing clearable"></div> </div> </div> </div> <p> With the latest changes, Box&nbsp;2 satisfies the conditions listed by the spec: <q>If the top and bottom margins of an element with clearance are adjoining</q>. We can move to the next part of the commented fragment. </p> <h3>Part 2</h3> <blockquote> (…) its margins collapse with the adjoining margins of following siblings (…) </blockquote> <p> This part describes a behaviour that is fully expected once you know the rules of margin collapse. I think this sentence was included in the spec only as an additional confirmation of this expected behaviour. </p> <p> Anyway, let’s see an example. Suppose we add a third non⁠-⁠floated box to our set⁠-⁠up. Importantly, Box&nbsp;1, Box&nbsp;2 and Box&nbsp;3 all have the same setting of <code class="language-css">margin:&nbsp;10px</code>. </p> <div id="ex-8.3.1.5-iii" class="example-visualization"> <style> #ex-8\.3\.1\.5-iii .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.5-iii .parent {
+          background-color: #dfdff9;
+        }
+
+        #ex-8\.3\.1\.5-iii .float {
+          background-color: #5c004eaf;
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+        }
+
+        #ex-8\.3\.1\.5-iii .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        }
+
+        #ex-8\.3\.1\.5-iii .self-collapsing {
+          height: 0;
+        }
+
+        #ex-8\.3\.1\.5-iii .clearable {
+          clear: both;
+        }
+
+        #ex-8\.3\.1\.5-iii
+          .show-outline:checked
+          ~ .example-frame
+          .parent
+          .non-floated.self-collapsing.clearable {
+          outline: 2px dotted red;
+        } </style> <input id="ex-8.3.1.5-iii-show-outline" class="show-outline" type="checkbox"><label for="ex-8.3.1.5-iii-show-outline">Show outline of Box&nbsp;2</label> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated self-collapsing clearable"></div> <div class="non-floated">Box 3</div> </div> </div> </div> <p> As mentioned, Box&nbsp;3 has a margin of 10&nbsp;pixels. However, we can see that the box is positioned right below Box&nbsp;2. This demonstrates that the top margin of Box&nbsp;3 and the top and bottom margins of Box&nbsp;2 collapsed. If there was no collapse, we would expect a 10⁠-⁠pixel gap between Box&nbsp;2 and Box&nbsp;3. </p> <h3>Part 3</h3> <blockquote> (…) but that resulting margin does not collapse with the bottom margin of the parent block. </blockquote> <p> This is the meatiest part of the entire fragment. To keep things simple, let’s remove Box&nbsp;3 from our example. </p> <p> The following set⁠-⁠up is very similar to an example we have already seen. The only difference is that the parent box has now <code class="language-css">margin: 20px</code>. </p> <div id="ex-8.3.1.5-iv" class="example-visualization"> <style> #ex-8\.3\.1\.5-iv .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.5-iv .parent {
+          background-color: #dfdff9;
+          margin: 20px;
+        }
+
+        #ex-8\.3\.1\.5-iv .float {
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+          background-color: #5c004eaf;
+        }
+
+        #ex-8\.3\.1\.5-iv .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 20px;
+        }
+
+        #ex-8\.3\.1\.5-iv .self-collapsing {
+          height: 0;
+        }
+
+        #ex-8\.3\.1\.5-iv .clearable {
+          clear: both;
+        }
+
+        #ex-8\.3\.1\.5-iv
+          .show-outline:checked
+          ~ .example-frame
+          .parent
+          .non-floated.self-collapsing.clearable {
+          outline: 2px dotted red;
+        }
+
+        #ex-8\.3\.1\.5-iv .margin-indicator {
+          background-color: #686892;
+          color: white;
+          font-size: smaller;
+          margin: 0;
+          padding: 1px;
+          text-align: center;
+        } </style> <input id="ex-8.3.1.5-iv-show-outline" class="show-outline" type="checkbox"><label for="ex-8.3.1.5-iv-show-outline">Show outline of Box&nbsp;2</label> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated self-collapsing clearable"></div> </div> <div class="margin-indicator"> ↑&nbsp;The space above is the bottom margin of the parent box. </div> </div> </div> <p> By the rules set out in Section&nbsp;8.1.3, the top margin of Box&nbsp;2, the bottom margin of Box&nbsp;2, and the bottom margin of the parent box are all adjoining. That is, they should <em>theoretically</em> collapse into a single margin. </p> <p> However, the fragment of the spec we are discussing here describes an exception: while the top and the bottom margins of Box&nbsp;2 will collapse, this resulting margin will not collapse with the bottom margin of the parent box. </p> <p> This is all because Box&nbsp;2 from our example has clearance and its top and bottom margins are adjoining. </p> <h3>Why does CSS have this exception?</h3> <p> As you might know, floats are not used to calculate the height of the box that contains them. Consider this set⁠-⁠up: </p> <div id="ex-8.3.1.5-v" class="example-visualization"> <style> #ex-8\.3\.1\.5-v .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.5-v .parent {
+          background-color: #dfdff9;
+          margin: 20px;
+        }
+
+        #ex-8\.3\.1\.5-v .float {
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+          background-color: #5c004eaf;
+        }
+
+        #ex-8\.3\.1\.5-v .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 20px;
+        } </style> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> </div> </div> </div> <p> The float extends beyond the parent box. This is often an undesirable effect. </p> <p> What can we do? One idea is to introduce an “invisible” box: one without any content, any padding, any borders. We won’t clear this box. We will only add a large top margin to the box, so that the box is positioned lower than the float. Here is the result: </p> <div id="ex-8.3.1.5-vi" class="example-visualization"> <style> #ex-8\.3\.1\.5-vi .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.5-vi .parent {
+          background-color: #dfdff9;
+          margin: 20px;
+        }
+
+        #ex-8\.3\.1\.5-vi .float {
+          background-color: #5c004eaf;
+          color: white;
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+        }
+
+        #ex-8\.3\.1\.5-vi .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 20px;
+        }
+
+        #ex-8\.3\.1\.5-vi .self-collapsing {
+          height: 0;
+          margin-top: 50px;
+        }
+
+        #ex-8\.3\.1\.5-vi
+          .show-outline:checked
+          ~ .example-frame
+          .parent
+          .non-floated.self-collapsing {
+          outline: 2px dotted red;
+        } </style> <input id="ex-8.3.1.5-vi-show-outline" class="show-outline" type="checkbox"><label for="ex-8.3.1.5-vi-show-outline">Show the outline of the “invisible” box</label> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated self-collapsing"></div> </div> </div> </div> <p> No joy, the height of the parent is still the same. But if you use the toggle to reveal the position of the invisible box, you will see that it is indeed placed below the float. In other words, the parent did not grow in height to contain the invisible box. </p> <p> The parent box ignoring the invisible box might seem surprising. It certainly did to me! However, the result is perfectly in line with the spec (more precisely, with <a href="https://www.w3.org/TR/CSS22/visudet.html#normal-block">Section&nbsp;10.6.3</a>). If a child’s top margin collapses with the parent’s bottom margin – this is the case with our “invisible” box – then this child is not considered in the calculation of the parent’s height. </p> <p> Now, the exception we have discussed in this comment says that if the “invisible” box has clearance, then there is no margin collapse. Thus, the height calculation rule I have just mentioned does not apply. The parent will grow in size to contain the cleared “invisible” box. </p> <div id="ex-8.3.1.5-vii" class="example-visualization"> <style> #ex-8\.3\.1\.5-vii .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.5-vii .parent {
+          background-color: #dfdff9;
+        }
+
+        #ex-8\.3\.1\.5-vii .float {
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+          background-color: #5c004eaf;
+        }
+
+        #ex-8\.3\.1\.5-vii .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        }
+
+        #ex-8\.3\.1\.5-vii .self-collapsing {
+          height: 0;
+        }
+
+        #ex-8\.3\.1\.5-vii .clearable {
+          clear: both;
+        }
+
+        #ex-8\.3\.1\.5-vii
+          .show-outline:checked
+          ~ .example-frame
+          .parent
+          .non-floated.self-collapsing.clearable {
+          outline: 2px dotted red;
+        } </style> <input id="ex-8.3.1.5-vii-show-outline" class="show-outline" type="checkbox"><label for="ex-8.3.1.5-vii-show-outline">Show outline of Box&nbsp;2</label> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated self-collapsing clearable"></div> </div> </div> </div> <p> Possibly, the CSS&nbsp;2 spec introduced the exception to make the “clearfix hack” possible. The hack comes in various flavours. One idea is that you introduce a cleared invisible box, so that the parent box can contain the float, like in the example just shown. Without the exception, clearing the box would not help. </p> </div> <div class="copyright-notice"> <p> <img alt="Creative Commons License" src="/images/CC_BY-SA_small.svg"> This work by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Mateusz Sarnecki</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. </p> </div> </article> </main> <script src="/scripts/main.js"></script> <!-- GoatCounter, privacy-sensitive web analytics --> <script data-goatcounter="https://msar.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script> </body></html>

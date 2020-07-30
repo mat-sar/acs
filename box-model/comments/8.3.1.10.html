@@ -1,0 +1,227 @@
+<html lang="en"><head> <meta charset="utf-8"> <title>Barriers to margin collapse | Annotated CSS Spec </title> <meta name="description" content="Broaden your CSS knowledge by reading a specification enriched with explanations and examples."> <meta name="viewport" content="width=device-width,initial-scale=1"> <meta name="robots" content="noindex"> <meta property="og:title" content="Annotated CSS Spec"> <meta property="og:url" content="https://annotatedcss.com"> <meta property="og:description" content="Broaden your CSS knowledge by reading an annotated specification!"> <meta property="og:image" content="/images/logo.png"> <meta property="og:type" content="website"> <meta property="og:image:width" content="300"> <meta property="og:image:height" content="300"> <link href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Open+Sans:ital,wght@0,400;0,600;1,300;1,400&amp;display=swap" rel="stylesheet"> <link rel="stylesheet" href="/styles/main.css"> <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16"> <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32"> <link rel="icon" type="image/png" href="/images/favicon-96x96.png" sizes="96x96"> </head> <body> <header> <svg class="logo" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 41.01 41.01"><g class="marginBox" fill="none" stroke="#ececfb" stroke-width="2.646"><path d="M1.323 7.938V1.323h6.615M1.323 11.898v6.614M1.323 22.488v6.614M7.937 39.688H1.323v-6.615M39.688 7.938V1.323h-6.615M39.688 11.898v6.614M39.688 22.488v6.614M33.073 39.688h6.614v-6.615M11.906 1.318h6.615M22.49 1.318h6.614M11.906 39.688h6.615M22.49 39.688h6.614"></path></g><rect class="borderBox" ry="0" height="25.261" width="25.261" y="7.87" x="7.875" opacity=".99" fill="none" stroke="#ececfb" stroke-width="2.52" stroke-linecap="round"></rect><rect class="contentBox" ry="0" height="14.552" width="14.552" y="13.23" x="13.229" opacity=".99" fill="#c7a6e7ff"></rect></svg> <a class="title" href="/">Annotated CSS&nbsp;Spec </a><a class="help-link" href="/about">?</a> </header> <main> <article class="spec-comment open" data-comment-on="/box-model.html"> <div class="content"> <div class="comment-identifier"> This comment relates to the following words from Section&nbsp;8.3.1 of CSS&nbsp;2.2: <blockquote> no line boxes, no clearance, no padding and no border separate them </blockquote> </div> <p> Broadly speaking, the commented fragment of the spec can be understood as saying: “two margins are adjoining if there is no barrier between them”. These barriers can be line boxes, clearance, padding and borders. </p> <p> I’ll review them one by one. If you prefer to jump right to a specific topic, here are the links: </p> <nav> <ul> <li> <a href="#line-boxes-as-barrier">Line boxes as a barrier to margin collapse</a> </li> <li> <a href="#clearance-as-barrier">Clearance as a barrier to margin collapse</a> </li> <li> <a href="#padding-as-barrier">Padding as a barrier to margin collapse</a> </li> <li> <a href="#border-as-barrier">Border as a barrier to margin collapse</a> </li> </ul> </nav> <h3 id="line-boxes-as-barrier"> Line boxes as a barrier to margin collapse </h3> <p> The spec discusses line boxes in <a href="https://www.w3.org/TR/CSS22/visuren.html#line-box">Section&nbsp;9.4.2</a>. You might want to read that section first for a deeper understanding of line boxes. Here, I’ll only give a short overview of what they are. </p> <p>Consider this HTML:</p> <pre><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>
+  Here is an <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">&gt;</span></span>example<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">&gt;</span></span> to consider.
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">&gt;</span></span></code></pre> <p>And this CSS:</p> <pre><code class="language-css"><span class="token selector">span</span> <span class="token punctuation">{</span>
+  <span class="token property">font-size</span><span class="token punctuation">:</span> 2em<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre> <p> Any text contained directly inside this <code class="language-html">&lt;p&gt;</code> will be wrapped in a so⁠-⁠called anonymous inline box. That is, the <code class="language-html">&lt;p&gt;</code> element will contain these boxes: </p> <ol> <li>anonymous inline box with “Here is an ”</li> <li> inline box for <code class="language-html">&lt;em&gt;</code> with “example” </li> <li>anonymous inline box with “ to consider.”</li> </ol> <p> If the box for <code class="language-html">&lt;p&gt;</code> is wide enough, the three boxes will be placed next to each other. In this way, they will be arranged into one line of content. This line of content forms a rectangle: </p> <img src="/images/8.3.1.10-line-box.svg" alt="Three inline boxes laid out on the same line. The first contains the
+    words “Here is an ”, the second “example”, the third “ to consider”. The
+    font size of the second box is greater than in the other two, with the
+    result that the box is the tallest. The three boxes are contained
+    within a single rectangle."> <p> This rectangle is a line box. To use the definition provided by the spec: <q>The rectangular area that contains the boxes that form a line is called a <i>line box</i>.</q> </p> <p> To return to the commented fragment of the spec: two margins are not considered adjoining if there is a line box between them. </p> <p>The HTML below will allow us to see an example:</p> <pre><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>parent<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>child<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">&gt;</span></span>Some text<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>child<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre> <p>Let’s add styling:</p> <pre><code class="language-css"><span class="token selector">.parent</span> <span class="token punctuation">{</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> #dfdff9<span class="token punctuation">;</span>
+  <span class="token property">border</span><span class="token punctuation">:</span> 1px solid #686892<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.child</span> <span class="token punctuation">{</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> #705697<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 20px<span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre> <p> The result isn’t surprising: the bottom margin of the first child box and the top margin of the second child box are not adjoining. This is because the two margins are separated by the line box generated for the <code class="language-html">&lt;span&gt;</code> element. </p> <div id="ex-8.3.1.10-i" class="example-visualization"> <style> #ex-8\.3\.1\.10-i .parent {
+          background-color: #dfdff9;
+          border: 1px solid #686892;
+        }
+
+        #ex-8\.3\.1\.10-i .child {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        } </style> <div class="example-frame"> <div class="parent"> <div class="child"></div> <span>Some text</span> <div class="child"></div> </div> </div> </div> <p> Now, let’s look at a more interesting example. We’ll make the line box zero⁠-⁠height. For this, we need to target two properties: <code class="language-css">line-height</code> on the parent and <code class="language-css">font-size</code> on the <code class="language-html">&lt;span&gt;</code> element. </p> <pre><code class="language-css"><span class="token selector">.parent</span> <span class="token punctuation">{</span>
+  <span class="token property">line-height</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">span</span> <span class="token punctuation">{</span>
+  <span class="token property">font-size</span><span class="token punctuation">:</span> 0<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre> <p> We need to set <code class="language-css">line-height: 0</code> to ensure that any line boxes created inside the parent have no minimal height. </p> <p> With these settings, the line box has zero height. Still, the presence of the line box is enough to prevent margin collapse: </p> <div id="ex-8.3.1.10-ii" class="example-visualization"> <style> #ex-8\.3\.1\.10-ii .parent {
+          background-color: #dfdff9;
+          border: 1px solid #686892;
+          line-height: 0;
+        }
+
+        #ex-8\.3\.1\.10-ii .child {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        }
+
+        #ex-8\.3\.1\.10-ii span {
+          font-size: 0;
+        } </style> <div class="example-frame"> <div class="parent"> <div class="child"></div> <span>Some text</span> <div class="child"></div> </div> </div> </div> <p> Importantly, there is a type of zero⁠-⁠height line boxes that <em>do</em> prevent margin collapse. The spec mentions these boxes in the sentence right after the one we’re discussing. As the spec says: <q>Note that certain zero-height line boxes (see&nbsp;9.4.2) are ignored for this purpose.</q> I discuss this case in the <a href="/box-model/comments/8.3.1.11">next comment</a>. </p> <h3 id="clearance-as-barrier">Clearance as a barrier to margin collapse</h3> <p> Let’s start by discussing what clearance is. The treatment here will be cursory; I recommend that you consult <a href="https://www.w3.org/TR/CSS22/visuren.html#floats">Section&nbsp;9.5</a> for more details. </p> <p> Clearance exists in the context of floats. As the spec says, a float – also called a floated box – is <q>a box that is shifted to the left or right on the current line</q>. Let’s consider an example based on this HTML: </p> <pre><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>parent<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>float<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Float<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>non-floated<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Box 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>non-floated<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>Box 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre> <p> We will set <code class="language-css">float: right</code> on the first child. As a result, it becomes a right⁠-⁠floating box: </p> <div id="ex-8.3.1.10-iii" class="example-visualization"> <style> #ex-8\.3\.1\.10-iii .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.10-iii .parent {
+          background-color: #dfdff9;
+        }
+
+        #ex-8\.3\.1\.10-iii .float {
+          background-color: #5c004eaf;
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+        }
+
+        #ex-8\.3\.1\.10-iii .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        } </style> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated">Box 2</div> </div> </div> </div> <p> The float has a semi⁠-⁠transparent background, which allows us to see that Box&nbsp;1 and Box&nbsp;2 are laid out as if the float wasn’t present. This is one characteristic feature of floats: they are taken out of the “normal” flow of boxes. </p> <p> Now, we will modify the example with just a single change in the styling. I’ll describe the change in a moment; first, let’s see the effect: </p> <div id="ex-8.3.1.10-iv" class="example-visualization"> <style> #ex-8\.3\.1\.10-iv .parent * {
+          color: #f3eafbff;
+        }
+
+        #ex-8\.3\.1\.10-iv .parent {
+          background-color: #dfdff9;
+        }
+
+        #ex-8\.3\.1\.10-iv .float {
+          background-color: #5c004eaf;
+          float: right;
+          height: 50px;
+          line-height: 50px;
+          text-align: center;
+          width: 50px;
+        }
+
+        #ex-8\.3\.1\.10-iv .non-floated {
+          background-color: #705697;
+          height: 20px;
+          margin: 10px;
+        }
+
+        #ex-8\.3\.1\.10-iv .clearable {
+          clear: both;
+        } </style> <div class="example-frame"> <div class="parent"> <div class="float">Float</div> <div class="non-floated">Box 1</div> <div class="non-floated clearable">Box 2</div> </div> </div> </div> <p> Box&nbsp;2 has now become “sensitive” to the presence of the float. That is, Box&nbsp;2 has been pushed down, so that it is below the float. The terminology is that Box&nbsp;2 has been <i>cleared</i>. </p> <p> This effect was achieved by declaring <code class="language-css">clear: right</code> on Box&nbsp;2. This setting dictates that Box&nbsp;2 should be positioned below any right⁠-⁠floating box that originates from an element earlier in the source document. In contrast, Box&nbsp;1 has the default <code class="language-css">clear: none</code>: as a result, it is positioned as if the float wasn’t present. </p> <p> Other possible values for <code class="language-css">clear</code> are <code class="language-css">left</code> and <code class="language-css">both</code>. These values, just like <code class="language-css">right</code>, all refer to what kind of floats the box should be pushed below. For example, <code class="language-css">clear: both</code> means that the box must be positioned below both left⁠- and right⁠-⁠floating boxes. </p> <p> To make sure that Box&nbsp;2 is cleared, the browser had to introduce clearance. Clearance is spacing above a box’s top margin: </p> <img src="/images/8.3.1.10-clearance-between-boxes.svg" alt="A parent box which contains three boxes: one float and two non-floated
+    boxes called Box 1 and Box 2. Box 2 is cleared, with the result that there
+    is extra space introduced between the bottom margin of Box 1 and the top
+    margin of Box 2."> <p> Whenever there is clearance between two margins, as in the example above, this clearance acts as a barrier between these margins. They are no longer adjoining, so they cannot collapse. </p> <p> Importantly, setting <code class="language-css">clear</code> to a value other than <code class="language-css">none</code> does not automatically mean that clearance is introduced. The browser will introduce clearance only when it’s necessary. Consider this example: </p> <img src="/images/8.3.1.10-clearable-but-not-cleared-box.svg" alt="A parent box which contains three boxes: one float and two non-floated
+    boxes called Box 1 and Box 2. The collapsed margin between Box 1 and Box 2
+    is large enough for the top edge of Box 2 to be placed below the bottom
+    edge of the float."> <p> Here, the collapsed margin between Box&nbsp;1 and Box&nbsp;2 is so big that there is no reason to clear Box&nbsp;2: it is already below any floats. </p> <p> Generally, the browser decides whether to apply clearance by running the following test. For each box with <code class="language-css">clear: left</code>, <code class="language-css">right</code> or <code class="language-css">both</code>, the browser checks where this box would be positioned if it had <code class="language-css">clear: none</code>. If its top border edge was below any float (like in the diagram above), the browser leaves the box in this position: there is no need for clearance to be introduced. </p> <p> Otherwise, the browser will push the box down so that its top border is right below the bottom margin of the float. In other words, the browser will introduce clearance. </p> <p> Note that it’s possible for clearance to be zero or to have a negative value. Let’s see an example: </p> <img src="/images/8.3.1.10-zero-clearance.svg" alt="A parent box which contains three boxes: one float and two non-floated
+    boxes called Box 1 and Box 2. The floated box has a height of 50 px. Box 1
+    and Box 2 both have a height of 20 px. Box 1 has a bottom margin of 15 px,
+    and Box 2 has a top margin of 15 px."> <p> We’ll assume that Box&nbsp;2 has <code class="language-css">clear: right</code>. Because of this setting, the browser applies the positioning test we discussed above. The browser checks where Box&nbsp;2 would be positioned if it had <code class="language-css">clear: none</code>. The answer is that the bottom margin of Box&nbsp;1 would collapse with the top margin of Box&nbsp;2. This would result in a single collapsed margin of 15&nbsp;pixels: </p> <img src="/images/8.3.1.10-zero-clearance-hypothetical-position-of-Box-2.svg" alt="A parent box which contains three boxes: one float and two non-floated
+      boxes called Box 1 and Box 2. The floated box has a height of 50 px. Box 1
+      and Box 2 both have a height of 20 px. Box 1 has a bottom margin of 15 px,
+      and Box 2 has a top margin of 15 px. The two margins collapse, with the
+      result that the top edge of Box 1 is above the bottom outer edge of the float."> <p> The result of the test is that Box&nbsp;2 must be moved down below the float. That is, the browser introduces clearance. Clearance prevents margin collapse, so now the distance between Box&nbsp;1 and Box&nbsp;2 is 30&nbsp;pixels: 15 from the bottom margin of Box&nbsp;1 and 15 from the top margin of Box&nbsp;2. </p> <p> These 30&nbsp;pixels is exactly the amount needed to ensure that that the top border edge of Box&nbsp;2 is right below the bottom margin edge of the float. So, the browser does not have to introduce any extra spacing above the top margin of Box&nbsp;2. Thus, clearance is present, but its value is 0. </p> <p> Now, let’s assume that Box&nbsp;1 has a bottom margin of 20&nbsp;pixels. This will still trigger the browser to introduce clearance, but now this clearance will need to have a negative value. This ensures that the top border edge of Box&nbsp;2 is positioned right below the bottom margin edge of the float: </p> <img src="/images/8.3.1.10-negative-clearance.svg" alt="A parent box which contains three boxes: one float and two non-floated
+    boxes called Box 1 and Box 2. The floated box has a height of 50 px. Box 1
+    and Box 2 both have a height of 20 px. Box 1 has a bottom margin of 20 px,
+    and Box 2 has a top margin of 15 px. Box 2 is cleared, with the result that
+    the browser introduces a clearance of −5 px to ensure that the top content
+    edge of Box 2 is right below the bottom outer edge of the float."> <p> “Clearance as a barrier to margin collapse” essentially means: when the browser clears a box, this box’s top margin can never collapse. </p> <h3 id="padding-as-barrier">Padding as a barrier to margin collapse</h3> <p>Let’s consider two boxes in a parent⁠-⁠child relation:</p> <pre><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>parent<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>child<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span></code></pre> <p>To this HTML, we’ll apply the following styling:</p> <pre><code class="language-css"><span class="token selector">.parent</span> <span class="token punctuation">{</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> #dfdff9<span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+  <span class="token property">padding-bottom</span><span class="token punctuation">:</span> 1px<span class="token punctuation">;</span>
+  <span class="token property">padding-top</span><span class="token punctuation">:</span> 1px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.child</span> <span class="token punctuation">{</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> #705697<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre> <p> The effect is demonstrated below. Use the toggle to observe how the rendered boxes change when you set the parent’s top and/or bottom padding to zero. </p> <div id="ex-8.3.1.10-v" class="example-visualization"> <style> #ex-8\.3\.1\.10-v .parent {
+          background-color: #dfdff9;
+          margin: 10px;
+          padding-bottom: 10px;
+          padding-top: 10px;
+        }
+
+        #ex-8\.3\.1\.10-v .child {
+          background-color: #705697;
+          height: 50px;
+          margin: 10px;
+          width: 50px;
+        }
+
+        #ex-8\.3\.1\.5-v-remove-top-padding:checked ~ .example-frame .parent {
+          padding-top: 0;
+        }
+
+        #ex-8\.3\.1\.5-v-remove-bottom-padding:checked
+          ~ .example-frame
+          .parent {
+          padding-bottom: 0;
+        } </style> <input id="ex-8.3.1.5-v-remove-top-padding" type="checkbox"><label for="ex-8.3.1.5-v-remove-top-padding">Set the parent’s top padding to zero</label><br> <input id="ex-8.3.1.5-v-remove-bottom-padding" type="checkbox"><label for="ex-8.3.1.5-v-remove-bottom-padding">Set the parent’s bottom padding to zero</label> <div class="example-frame"> <div class="parent"> <div class="child"></div> </div> </div> </div> <p> Wherever non⁠-⁠zero padding is present, it acts as a barrier between a margin that is right above the padding and a margin that is right below the padding,&nbsp;e.g.: </p> <img src="/images/8.3.1.10-padding-as-barrier-to-collapse.svg" alt="A parent and a child box. Both boxes have top and bottom margins.
+      The margins do not collapse because they are separated by the parent’s 
+      padding."> <p> In the example, padding acts a barrier between a parent and a child. Another situation when padding prevents margin collapse is when it is present between the top and bottom margins of a single box. I discuss this more in the comment on <a href="/box-model/comments/8.3.1.16">own margin collapse</a>. </p> <p> Note that with extremely small values for padding, e.g.&nbsp;<code class="language-css">0.01px</code>, the browser might not be able to render this padding. It’s almost as if the padding was zero. The word <i>almost</i> is key here: a padding of 0.01&nbsp;px will still prevent margin collapse, even if the padding itself is not visible. </p> <h3 id="border-as-barrier">Border as a barrier to margin collapse</h3> <p> The case of a border blocking margin collapse is very similar to the case of collapse blocked by padding. For this reason, we’ll use a similar example, in which there is a parent box and a child box. </p> <p>The two boxes will be styled like this:</p> <pre><code class="language-css"><span class="token selector">.parent</span> <span class="token punctuation">{</span>
+  <span class="token property">border</span><span class="token punctuation">:</span> 1px solid #686892<span class="token punctuation">;</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> #dfdff9<span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+    
+<span class="token selector">.child</span> <span class="token punctuation">{</span>
+  <span class="token property">background-color</span><span class="token punctuation">:</span> #705697<span class="token punctuation">;</span>
+  <span class="token property">height</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+  <span class="token property">margin</span><span class="token punctuation">:</span> 10px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 50px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span></code></pre> <p> In the rendered example, use the controls to observe how removing a border leads to margin collapse. </p> <style></style> <div id="ex-8.3.1.10-vi" class="example-visualization"> <style> #ex-8\.3\.1\.10-vi .parent {
+          background-color: #dfdff9;
+          border: 1px solid #686892;
+          margin: 10px;
+        }
+
+        #ex-8\.3\.1\.10-vi .child {
+          background-color: #705697;
+          height: 50px;
+          margin: 10px;
+          width: 50px;
+        }
+
+        #ex-8\.3\.1\.5-vi-remove-top-border:checked ~ .example-frame .parent {
+          border-top: 0;
+        }
+
+        #ex-8\.3\.1\.5-vi-remove-bottom-border:checked
+          ~ .example-frame
+          .parent {
+          border-bottom: 0;
+        } </style> <input id="ex-8.3.1.5-vi-remove-top-border" type="checkbox"><label for="ex-8.3.1.5-vi-remove-top-border">Set the parent’s top border to zero</label><br> <input id="ex-8.3.1.5-vi-remove-bottom-border" type="checkbox"><label for="ex-8.3.1.5-vi-remove-bottom-border">Set the parent’s bottom border to zero</label> <div class="example-frame"> <div class="parent"> <div class="child"></div> </div> </div> </div> <p> Rendering a border with a width of less than 1&nbsp;pixel can be tricky. The browser might decide not to draw such a small border at all. Compare the boxes below: </p> <div id="ex-8.3.1.10-vii" class="example-visualization"> <style> #ex-8\.3\.1\.10-vii .example-frame {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        #ex-8\.3\.1\.10-vii .border-example {
+          align-items: center;
+          border: 0px solid #686892;
+          display: flex;
+          height: 70px;
+          justify-content: center;
+          margin-bottom: 10px;
+          margin-right: 10px;
+          overflow: hidden;
+          width: 70px;
+        }
+
+        #ex-8\.3\.1\.10-vii .thin {
+          border-width: 1px;
+        }
+
+        #ex-8\.3\.1\.10-vii .very-thin {
+          border-width: 0.75px;
+        }
+
+        #ex-8\.3\.1\.10-vii .super-thin {
+          border-width: 0.5px;
+        }
+
+        #ex-8\.3\.1\.10-vii .extra-thin {
+          border-width: 0.25px;
+        }
+
+        #ex-8\.3\.1\.10-vii .ultra-thin {
+          border-width: 0.01px;
+        }
+
+        #ex-8\.3\.1\.10-vii .thinnest {
+          border-width: 0.001px;
+        } </style> <div class="example-frame"> <div class="border-example thin">1&nbsp;px</div> <div class="border-example very-thin">0.75&nbsp;px</div> <div class="border-example super-thin">0.5px&nbsp;</div> <div class="border-example extra-thin">0.25&nbsp;px</div> <div class="border-example ultra-thin">0.01&nbsp;px</div> <div class="border-example thinnest">0.001&nbsp;px</div> </div> </div> <p> When I tested the example above on different devices and browsers, I got different results. Some browsers showed the 0.01&nbsp;px border, but in practice that border didn’t look any different from the 0.25&nbsp;px border. None of the browsers showed the 0.001&nbsp;px border. </p> <p> Even though the browser might not draw the 0.001&nbsp;px border, the border is technically still there. And because it’s there, it blocks margin collapse. </p> </div> <div class="copyright-notice"> <p> <img alt="Creative Commons License" src="/images/CC_BY-SA_small.svg"> This work by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Mateusz Sarnecki</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>. </p> </div> </article> </main> <script src="/scripts/main.js"></script> <!-- GoatCounter, privacy-sensitive web analytics --> <script data-goatcounter="https://msar.goatcounter.com/count" async="" src="//gc.zgo.at/count.js"></script> </body></html>

@@ -1,0 +1,1178 @@
+/******************************************************************************
+ *                   Style sheet for the W3C specifications                   *
+ *
+ * This is the style sheet for W3C specifications, adapted for the needs of the
+ * "Annotated CSS 2 Spec" project.
+ *
+ * The adaption consists mainly in 1) prefixing the selectors with
+ *.spec-chapter, so that the styling applies only to the W3C content,
+ * and 2) removing CSS settings not relevant to "Annotated CSS 2 Spec".
+ *
+ ******************************************************************************/
+
+/******************************************************************************/
+/*                                   Body                                     */
+/******************************************************************************/
+
+.spec-chapter {
+  counter-reset: example figure issue;
+
+  /* Layout */
+  /* max-width: 50em; limit line length to 50em for readability   */
+  /* margin: 0 auto; center text within page                     */
+  /* padding: 1.6em 1.5em 2em 50px; assume 16px font size for downlevel clients */
+  /* padding: 1.6em 1.5em 2em calc(26px + 1.5em); leave space for status flag     */
+
+  /* Typography */
+  line-height: 1.5;
+  font-family: sans-serif;
+  widows: 2;
+  orphans: 2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+
+  /* Colors */
+  color: black;
+  background: white top left fixed no-repeat;
+  background-size: 25px auto;
+}
+
+/******************************************************************************/
+/*                         Front Matter & Navigation                          */
+/******************************************************************************/
+
+/** Header ********************************************************************/
+
+.spec-chapter div.head {
+  margin-bottom: 1em;
+}
+.spec-chapter div.head hr {
+  border-style: solid;
+}
+
+.spec-chapter div.head h1 {
+  font-weight: bold;
+  margin: 0 0 0.1em;
+  font-size: 220%;
+}
+
+.spec-chapter div.head h2 {
+  margin-bottom: 1.5em;
+}
+
+/** Copyright *****************************************************************/
+
+.spec-chapter p.copyright,
+.spec-chapter p.copyright small {
+  font-size: small;
+}
+
+/** Back to Top / ToC Toggle **************************************************/
+
+@media print {
+  #toc-nav {
+    display: none;
+  }
+}
+@media not print {
+  #toc-nav {
+    position: fixed;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    min-width: 1.33em;
+    border-top-right-radius: 2rem;
+    box-shadow: 0 0 2px;
+    font-size: 1.5em;
+    color: black;
+  }
+  #toc-nav > a {
+    display: block;
+    white-space: nowrap;
+
+    height: 1.33em;
+    padding: 0.1em 0.3em;
+    margin: 0;
+
+    box-shadow: 0 0 2px;
+    border: none;
+    border-top-right-radius: 1.33em;
+    background: white;
+  }
+  #toc-nav > #toc-jump {
+    padding-bottom: 2em;
+    margin-bottom: -1.9em;
+  }
+
+  #toc-nav > a:hover,
+  #toc-nav > a:focus {
+    background: #f8f8f8;
+  }
+  #toc-nav > a:not(:hover):not(:focus) {
+    color: #707070;
+  }
+
+  /* statusbar gets in the way on keyboard focus; remove once browsers fix */
+  #toc-nav > a[href="#toc"]:not(:hover):focus:last-child {
+    padding-bottom: 1.5rem;
+  }
+
+  #toc-nav:not(:hover) > a:not(:focus) > span + span {
+    /* Ideally this uses :focus-within on #toc-nav */
+    display: none;
+  }
+  #toc-nav > a > span + span {
+    padding-right: 0.2em;
+  }
+
+  #toc-toggle-inline {
+    vertical-align: 0.05em;
+    font-size: 80%;
+    color: gray;
+    color: hsla(203, 20%, 40%, 0.7);
+    border-style: none;
+    background: transparent;
+    position: relative;
+  }
+  #toc-toggle-inline:hover:not(:active),
+  #toc-toggle-inline:focus:not(:active) {
+    text-shadow: 1px 1px silver;
+    top: -1px;
+    left: -1px;
+  }
+
+  #toc-nav :active {
+    color: #c00;
+  }
+}
+
+/******************************************************************************/
+/*                                Sectioning                                  */
+/******************************************************************************/
+
+/** Headings ******************************************************************/
+
+.spec-chapter h1,
+.spec-chapter h2,
+.spec-chapter h3,
+.spec-chapter h4,
+.spec-chapter h5,
+.spec-chapter h6,
+.spec-chapter dt {
+  page-break-after: avoid;
+  page-break-inside: avoid;
+  font: 100% sans-serif; /* Reset all font styling to clear out UA styles */
+  font-family: inherit; /* Inherit the font family. */
+  line-height: 1.2; /* Keep wrapped headings compact */
+  hyphens: manual; /* Hyphenated headings look weird */
+}
+
+.spec-chapter h2,
+.spec-chapter h3,
+.spec-chapter h4,
+.spec-chapter h5,
+.spec-chapter h6 {
+  margin-top: 3rem;
+}
+
+.spec-chapter h1,
+.spec-chapter h2,
+.spec-chapter h3 {
+  color: #005a9c;
+  background: transparent;
+}
+
+.spec-chapter h1 {
+  font-size: 170%;
+}
+.spec-chapter h2 {
+  font-size: 140%;
+}
+.spec-chapter h3 {
+  font-size: 120%;
+}
+.spec-chapter h4 {
+  font-weight: bold;
+}
+.spec-chapter h5 {
+  font-style: italic;
+}
+.spec-chapter h6 {
+  font-variant: small-caps;
+}
+.spec-chapter dt {
+  font-weight: bold;
+}
+
+/** Subheadings ***************************************************************/
+
+.spec-chapter h1 + h2,
+#subtitle {
+  /* #subtitle is a subtitle in an H2 under the H1 */
+  margin-top: 0;
+}
+.spec-chapter h2 + h3,
+.spec-chapter h3 + h4,
+.spec-chapter h4 + h5,
+.spec-chapter h5 + h6 {
+  margin-top: 1.2em; /* = 1 x line-height */
+}
+
+/** Section divider ***********************************************************/
+
+.spec-chapter :not(.head) > :not(.head) + hr {
+  font-size: 1.5em;
+  text-align: center;
+  margin: 1em auto;
+  height: auto;
+  border: transparent solid 0;
+  background: transparent;
+}
+.spec-chapter :not(.head) > hr::before {
+  content: "\2727\2003\2003\2727\2003\2003\2727";
+}
+
+/******************************************************************************/
+/*                            Paragraphs and Lists                            */
+/******************************************************************************/
+
+.spec-chapter p {
+  margin: 1em 0;
+}
+
+.spec-chapter dd > p:first-child,
+.spec-chapter li > p:first-child {
+  margin-top: 0;
+}
+
+.spec-chapter ul,
+.spec-chapter ol {
+  margin-left: 0;
+  padding-left: 2em;
+}
+
+.spec-chapter li {
+  margin: 0.25em 0 0.5em;
+  padding: 0;
+}
+
+.spec-chapter dl dd {
+  margin: 0 0 0.5em 2em;
+}
+
+.spec-chapter .head dd + dd {
+  /* compact for header */
+  margin-top: -0.5em;
+}
+
+/* Style for algorithms */
+.spec-chapter ol.algorithm ol:not(.algorithm),
+.spec-chapter .algorithm > ol ol:not(.algorithm) {
+  border-left: 0.5em solid #def;
+}
+
+/* Style for switch/case <dl>s */
+.spec-chapter dl.switch > dd > ol.only {
+  margin-left: 0;
+}
+.spec-chapter dl.switch > dd > ol.algorithm {
+  margin-left: -2em;
+}
+.spec-chapter dl.switch {
+  padding-left: 2em;
+}
+.spec-chapter dl.switch > dt {
+  text-indent: -1.5em;
+  margin-top: 1em;
+}
+.spec-chapter dl.switch > dt + dt {
+  margin-top: 0;
+}
+.spec-chapter dl.switch > dt::before {
+  content: "\21AA";
+  padding: 0 0.5em 0 0;
+  display: inline-block;
+  width: 1em;
+  text-align: right;
+  line-height: 0.5em;
+}
+
+/** Terminology Markup ********************************************************/
+
+/******************************************************************************/
+/*                                 Inline Markup                              */
+/******************************************************************************/
+
+/** Terminology Markup ********************************************************/
+.spec-chapter dfn {
+  /* Defining instance */
+  font-weight: bolder;
+}
+.spec-chapter a > i {
+  /* Instance of term */
+  font-style: normal;
+}
+.spec-chapter dt dfn code,
+.spec-chapter code.idl {
+  font-size: inherit;
+}
+.spec-chapter dfn var {
+  font-style: normal;
+}
+
+/** Change Marking ************************************************************/
+
+.spec-chapter del {
+  color: red;
+  text-decoration: line-through;
+}
+.spec-chapter ins {
+  color: #080;
+  text-decoration: underline;
+}
+
+/** Miscellaneous improvements to inline formatting ***************************/
+
+.spec-chapter sup {
+  vertical-align: super;
+  font-size: 80%;
+}
+
+/******************************************************************************/
+/*                                    Code                                    */
+/******************************************************************************/
+
+/** General monospace/pre rules ***********************************************/
+
+.spec-chapter pre,
+.spec-chapter code,
+.spec-chapter samp {
+  font-family: Menlo, Consolas, "DejaVu Sans Mono", Monaco, monospace;
+  font-size: 0.9em;
+  hyphens: none;
+  text-transform: none;
+  text-align: left;
+  text-align: start;
+  font-variant: normal;
+  orphans: 3;
+  widows: 3;
+  page-break-before: avoid;
+}
+.spec-chapter pre code,
+.spec-chapter code code {
+  font-size: 100%;
+}
+
+.spec-chapter pre {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  overflow: auto;
+}
+
+/** Inline Code fragments *****************************************************/
+
+/* Do something nice. */
+
+/******************************************************************************/
+/*                                    Links                                   */
+/******************************************************************************/
+
+/** General Hyperlinks ********************************************************/
+
+/* We hyperlink a lot, so make it less intrusive */
+.spec-chapter a[href] {
+  color: #034575;
+  text-decoration: none;
+  border-bottom: 1px solid #707070;
+  /* Need a bit of extending for it to look okay */
+  padding: 0 1px 0;
+  margin: 0 -1px 0;
+}
+
+.spec-chapter a:visited {
+  border-bottom-color: #bbb;
+}
+
+/* Use distinguishing colors when user is interacting with the link */
+.spec-chapter a[href]:focus,
+.spec-chapter a[href]:hover {
+  background: #f8f8f8;
+  background: rgba(75%, 75%, 75%, 0.25);
+  border-bottom-width: 3px;
+  margin-bottom: -2px;
+}
+.spec-chapter a[href]:active {
+  color: #c00;
+  border-color: #c00;
+}
+
+/* Backout above styling for W3C logo */
+.spec-chapter .head p:not(.copyright) > a,
+.spec-chapter .head > a:first-child {
+  border: none;
+  text-decoration: none;
+  background: transparent;
+}
+
+/******************************************************************************/
+/*                                    Images                                  */
+/******************************************************************************/
+
+.spec-chapter img {
+  border-style: none;
+}
+
+/* For autogen numbers, add
+   .caption::before, figcaption::before { content: "Figure " counter(figure) ". "; }
+*/
+
+.spec-chapter figure,
+.spec-chapter .figure,
+.spec-chapter .sidefigure {
+  page-break-inside: avoid;
+  text-align: center;
+  margin: 2.5em 0;
+}
+.spec-chapter .figure img,
+.spec-chapter .sidefigure img,
+.spec-chapter figure img,
+.spec-chapter .figure object,
+.spec-chapter .sidefigure object,
+.spec-chapter figure object {
+  max-width: 100%;
+  margin: auto;
+  height: auto;
+}
+.spec-chapter .figure pre,
+.spec-chapter .sidefigure pre,
+.spec-chapter figure pre {
+  text-align: left;
+  display: table;
+  margin: 1em auto;
+}
+.spec-chapter .figure table,
+.spec-chapter figure table {
+  margin: auto;
+}
+@media screen and (min-width: 20em) {
+  .spec-chapter .sidefigure {
+    float: right;
+    width: 50%;
+    margin: 0 0 0.5em 0.5em;
+  }
+}
+.spec-chapter .caption,
+.spec-chapter figcaption,
+.spec-chapter caption {
+  font-style: italic;
+  font-size: 90%;
+}
+.spec-chapter .caption::before,
+.spec-chapter figcaption::before,
+.spec-chapter figcaption > .marker {
+  font-weight: bold;
+}
+.spec-chapter .caption,
+.spec-chapter figcaption {
+  counter-increment: figure;
+}
+
+/* DL list is indented 2em, but figure inside it is not */
+.spec-chapter dd > .figure,
+.spec-chapter dd > figure {
+  margin-left: -2em;
+}
+
+/******************************************************************************/
+/*                             Colored Boxes                                  */
+/******************************************************************************/
+
+.spec-chapter .issue,
+.spec-chapter .note,
+.spec-chapter .example,
+.spec-chapter .advisement,
+.spec-chapter blockquote {
+  padding: 0.5em;
+  border: 0.5em;
+  border-left-style: solid;
+  page-break-inside: avoid;
+}
+.spec-chapter span.issue,
+.spec-chapter span.note {
+  padding: 0.1em 0.5em 0.15em;
+  border-right-style: solid;
+}
+
+.spec-chapter .issue,
+.spec-chapter .note,
+.spec-chapter .example,
+.spec-chapter .advisement,
+.spec-chapter blockquote {
+  margin: 1em auto;
+}
+.spec-chapter .note > p:first-child,
+.spec-chapter .issue > p:first-child,
+.spec-chapter blockquote > :first-child {
+  margin-top: 0;
+}
+.spec-chapter blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+/** Blockquotes ***************************************************************/
+
+.spec-chapter blockquote {
+  border-color: silver;
+}
+
+/** Open issue ****************************************************************/
+
+.spec-chapter .issue {
+  border-color: #e05252;
+  background: #fbe9e9;
+  counter-increment: issue;
+  overflow: auto;
+}
+.spec-chapter .issue::before,
+.spec-chapter .issue > .marker {
+  color: #ae1e1e;
+  padding-right: 1em;
+  text-transform: uppercase;
+}
+/* Add .issue::before { content: "Issue " counter(issue) " "; } for autogen numbers,
+   or use class="marker" to mark up the issue number in source. */
+
+/** Example *******************************************************************/
+
+.spec-chapter .example {
+  border-color: #e0cb52;
+  background: #fcfaee;
+  counter-increment: example;
+  overflow: auto;
+  clear: both;
+}
+.spec-chapter .example::before,
+.spec-chapter .example > .marker {
+  text-transform: uppercase;
+  color: #827017;
+  min-width: 7.5em;
+  display: block;
+}
+/* Add .example::before { content: "Example " counter(example) " "; } for autogen numbers,
+   or use class="marker" to mark up the example number in source. */
+
+/** Non-normative Note ********************************************************/
+
+.spec-chapter .note {
+  border-color: #52e052;
+  background: #e9fbe9;
+  overflow: auto;
+}
+
+.spec-chapter .note::before,
+.spec-chapter .note > .marker,
+.spec-chapter details.note > summary::before,
+.spec-chapter details.note > summary > .marker {
+  text-transform: uppercase;
+  display: block;
+  color: hsl(120, 70%, 30%);
+}
+/* Add .note::before { content: "Note "; } for autogen label,
+   or use class="marker" to mark up the label in source. */
+
+.spec-chapter details.note > summary {
+  color: hsl(120, 70%, 30%);
+}
+.spec-chapter details.note[open] > summary {
+  border-bottom: 1px silver solid;
+}
+
+/** Advisement Box ************************************************************/
+/*  for attention-grabbing normative statements */
+
+.spec-chapter .advisement {
+  border-color: orange;
+  border-style: none solid;
+  background: #ffeecc;
+}
+.spec-chapter strong.advisement {
+  display: block;
+  text-align: center;
+}
+.spec-chapter .advisement > .marker {
+  color: #b35f00;
+}
+
+/** Spec Obsoletion Notice ****************************************************/
+/* obnoxious obsoletion notice for older/abandoned specs. */
+
+.spec-chapter details {
+  display: block;
+}
+.spec-chapter summary {
+  font-weight: bolder;
+}
+
+.spec-chapter .annoying-warning:not(details),
+.spec-chapter details.annoying-warning:not([open]) > summary,
+.spec-chapter details.annoying-warning[open] {
+  background: hsla(40, 100%, 50%, 0.95);
+  color: black;
+  padding: 0.75em 1em;
+  border: red;
+  border-style: solid none;
+  box-shadow: 0 2px 8px black;
+  text-align: center;
+}
+.spec-chapter .annoying-warning :last-child {
+  margin-bottom: 0;
+}
+
+@media not print {
+  .spec-chapter details.annoying-warning[open] {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 2em;
+    z-index: 1000;
+  }
+}
+
+.spec-chapter details.annoying-warning:not([open]) > summary {
+  text-align: center;
+}
+
+/** Entity Definition Boxes ***************************************************/
+
+.spec-chapter .def {
+  padding: 0.5em 1em;
+  background: #def;
+  margin: 1.2em 0;
+  border-left: 0.5em solid #8ccbf2;
+}
+
+/******************************************************************************/
+/*                                    Tables                                  */
+/******************************************************************************/
+
+.spec-chapter th,
+.spec-chapter td {
+  text-align: left;
+  text-align: start;
+}
+
+/** Property/Descriptor Definition Tables *************************************/
+
+.spec-chapter table.def {
+  /* inherits .def box styling, see above */
+  width: 100%;
+  border-spacing: 0;
+}
+
+.spec-chapter table.def td,
+.spec-chapter table.def th {
+  padding: 0.5em;
+  vertical-align: baseline;
+  border-bottom: 1px solid #bbd7e9;
+}
+
+.spec-chapter table.def > tbody > tr:last-child th,
+.spec-chapter table.def > tbody > tr:last-child td {
+  border-bottom: 0;
+}
+
+.spec-chapter table.def th {
+  font-style: italic;
+  font-weight: normal;
+  padding-left: 1em;
+  width: 3em;
+}
+
+/* For when values are extra-complex and need formatting for readability */
+.spec-chapter table td.pre {
+  white-space: pre-wrap;
+}
+
+/* A footnote at the bottom of a def table */
+.spec-chapter table.def td.footnote {
+  padding-top: 0.6em;
+}
+.spec-chapter table.def td.footnote::before {
+  content: " ";
+  display: block;
+  height: 0.6em;
+  width: 4em;
+  border-top: thin solid;
+}
+
+/** Data tables (and properly marked-up index tables) *************************/
+/*
+     <table class="data"> highlights structural relationships in a table
+     when correct markup is used (e.g. thead/tbody, th vs. td, scope attribute)
+
+     Use class="complex data" for particularly complicated tables --
+     (This will draw more lines: busier, but clearer.)
+
+     Use class="long" on table cells with paragraph-like contents
+     (This will adjust text alignment accordingly.)
+     Alternately use class="longlastcol" on tables, to have the last column assume "long".
+*/
+
+.spec-chapter table {
+  word-wrap: normal;
+  overflow-wrap: normal;
+  hyphens: manual;
+}
+
+.spec-chapter table.data,
+.spec-chapter table.index {
+  margin: 1em auto;
+  border-collapse: collapse;
+  border: hidden;
+  width: 100%;
+}
+.spec-chapter table.data caption,
+.spec-chapter table.index caption {
+  max-width: 50em;
+  margin: 0 auto 1em;
+}
+
+.spec-chapter table.data td,
+.spec-chapter table.data th,
+.spec-chapter table.index td,
+.spec-chapter table.index th {
+  padding: 0.5em 1em;
+  border-width: 1px;
+  border-color: silver;
+  border-top-style: solid;
+}
+
+.spec-chapter table.data thead td:empty {
+  padding: 0;
+  border: 0;
+}
+
+.spec-chapter table.data thead,
+.spec-chapter table.index thead,
+.spec-chapter table.data tbody,
+.spec-chapter table.index tbody {
+  border-bottom: 2px solid;
+}
+
+.spec-chapter table.data colgroup,
+.spec-chapter table.index colgroup {
+  border-left: 2px solid;
+}
+
+.spec-chapter table.data tbody th:first-child,
+.spec-chapter table.index tbody th:first-child {
+  border-right: 2px solid;
+  border-top: 1px solid silver;
+  padding-right: 1em;
+}
+
+.spec-chapter table.data th[colspan],
+.spec-chapter table.data td[colspan] {
+  text-align: center;
+}
+
+.spec-chapter table.complex.data th,
+.spec-chapter table.complex.data td {
+  border: 1px solid silver;
+  text-align: center;
+}
+
+.spec-chapter table.data.longlastcol td:last-child,
+.spec-chapter table.data td.long {
+  vertical-align: baseline;
+  text-align: left;
+}
+
+.spec-chapter table.data img {
+  vertical-align: middle;
+}
+
+/*
+Alternate table alignment rules
+
+table.data,
+table.index {
+    text-align: center;
+}
+
+table.data  thead th[scope="row"],
+table.index thead th[scope="row"] {
+    text-align: right;
+}
+
+table.data  tbody th:first-child,
+table.index tbody th:first-child  {
+    text-align: right;
+}
+
+Possible extra rowspan handling
+
+table.data  tbody th[rowspan]:not([rowspan='1']),
+table.index tbody th[rowspan]:not([rowspan='1']),
+table.data  tbody td[rowspan]:not([rowspan='1']),
+table.index tbody td[rowspan]:not([rowspan='1']) {
+    border-left: 1px solid silver;
+}
+
+table.data  tbody th[rowspan]:first-child,
+table.index tbody th[rowspan]:first-child,
+table.data  tbody td[rowspan]:first-child,
+table.index tbody td[rowspan]:first-child{
+    border-left: 0;
+    border-right: 1px solid silver;
+}
+*/
+
+/******************************************************************************/
+/*                                  Indices                                   */
+/******************************************************************************/
+
+/** Table of Contents *********************************************************/
+
+.spec-chapter .toc a {
+  /* More spacing; use padding to make it part of the click target. */
+  padding-top: 0.1rem;
+  /* Larger, more consistently-sized click target */
+  display: block;
+  /* Reverse color scheme */
+  color: black;
+  border-color: #3980b5;
+}
+.spec-chapter .toc a:visited {
+  border-color: #054572;
+}
+.spec-chapter .toc a:not(:focus):not(:hover) {
+  /* Allow colors to cascade through from link styling */
+  border-bottom-color: transparent;
+}
+
+.spec-chapter .toc,
+.spec-chapter .toc ol,
+.spec-chapter .toc ul,
+.spec-chapter .toc li {
+  list-style: none; /* Numbers must be inlined into source */
+  /* because generated content isn't search/selectable and markers can't do multilevel yet */
+  margin: 0;
+  padding: 0;
+}
+.spec-chapter .toc {
+  line-height: 1.1em; /* consistent spacing */
+}
+
+/* ToC not indented until third level, but font style & margins show hierarchy */
+.spec-chapter .toc > li {
+  font-weight: bold;
+}
+.spec-chapter .toc > li li {
+  font-weight: normal;
+}
+.spec-chapter .toc > li li li {
+  font-size: 95%;
+}
+.spec-chapter .toc > li li li li {
+  font-size: 90%;
+}
+.spec-chapter .toc > li li li li li {
+  font-size: 85%;
+}
+
+.spec-chapter .toc > li {
+  margin: 1.5rem 0;
+}
+.spec-chapter .toc > li li {
+  margin: 0.3rem 0;
+}
+.spec-chapter .toc > li li li {
+  margin-left: 2rem;
+}
+
+/* Section numbers in a column of their own */
+.spec-chapter .toc .secno {
+  float: left;
+  width: 4rem;
+  white-space: nowrap;
+}
+.spec-chapter .toc > li li li li .secno {
+  font-size: 85%;
+}
+.spec-chapter .toc > li li li li li .secno {
+  font-size: 100%;
+}
+
+.spec-chapter :not(li) > .toc {
+  margin-left: 5rem;
+}
+.spec-chapter .toc .secno {
+  margin-left: -5rem;
+}
+.spec-chapter .toc > li li li .secno {
+  margin-left: -7rem;
+}
+.spec-chapter .toc > li li li li .secno {
+  margin-left: -9rem;
+}
+.spec-chapter .toc > li li li li li .secno {
+  margin-left: -11rem;
+}
+
+/* Tighten up indentation in narrow ToCs */
+@media (max-width: 30em) {
+  .spec-chapter :not(li) > .toc {
+    margin-left: 4rem;
+  }
+  .spec-chapter .toc .secno {
+    margin-left: -4rem;
+  }
+  .spec-chapter .toc > li li li {
+    margin-left: 1rem;
+  }
+  .spec-chapter .toc > li li li .secno {
+    margin-left: -5rem;
+  }
+  .spec-chapter .toc > li li li li .secno {
+    margin-left: -6rem;
+  }
+  .spec-chapter .toc > li li li li li .secno {
+    margin-left: -7rem;
+  }
+}
+@media screen and (min-width: 78em) {
+  .spec-chapter:not(.toc-inline) :not(li) > .toc {
+    margin-left: 4rem;
+  }
+  .spec-chapter:not(.toc-inline) .toc .secno {
+    margin-left: -4rem;
+  }
+  .spec-chapter:not(.toc-inline) .toc > li li li {
+    margin-left: 1rem;
+  }
+  .spec-chapter:not(.toc-inline) .toc > li li li .secno {
+    margin-left: -5rem;
+  }
+  .spec-chapter:not(.toc-inline) .toc > li li li li .secno {
+    margin-left: -6rem;
+  }
+  .spec-chapter:not(.toc-inline) .toc > li li li li li .secno {
+    margin-left: -7rem;
+  }
+}
+.spec-chapter.toc-sidebar #toc :not(li) > .toc {
+  margin-left: 4rem;
+}
+.spec-chapter.toc-sidebar #toc .toc .secno {
+  margin-left: -4rem;
+}
+.spec-chapter.toc-sidebar #toc .toc > li li li {
+  margin-left: 1rem;
+}
+.spec-chapter.toc-sidebar #toc .toc > li li li .secno {
+  margin-left: -5rem;
+}
+.spec-chapter.toc-sidebar #toc .toc > li li li li .secno {
+  margin-left: -6rem;
+}
+.spec-chapter.toc-sidebar #toc .toc > li li li li li .secno {
+  margin-left: -7rem;
+}
+
+.spec-chapter .toc li {
+  clear: both;
+}
+
+/** Index *********************************************************************/
+
+/* Index Lists: Layout */
+.spec-chaper ul.index {
+  margin-left: 0;
+  columns: 15em;
+  text-indent: 1em hanging;
+}
+.spec-chaper ul.index li {
+  margin-left: 0;
+  list-style: none;
+  break-inside: avoid;
+}
+.spec-chaper ul.index li li {
+  margin-left: 1em;
+}
+.spec-chaper ul.index dl {
+  margin-top: 0;
+}
+.spec-chaper ul.index dt {
+  margin: 0.2em 0 0.2em 20px;
+}
+.spec-chaper ul.index dd {
+  margin: 0.2em 0 0.2em 40px;
+}
+/* Index Lists: Typography */
+.spec-chaper ul.index ul,
+.spec-chaper ul.index dl {
+  font-size: smaller;
+}
+@media not print {
+  .spec-chaper ul.index li span {
+    white-space: nowrap;
+    color: transparent;
+  }
+  .spec-chaper ul.index li a:hover + span,
+  .spec-chaper ul.index li a:focus + span {
+    color: #707070;
+  }
+}
+
+/** Index Tables *****************************************************/
+/* See also the data table styling section, which this effectively subclasses */
+
+.spec-chaper table.index {
+  font-size: small;
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: left;
+  margin: 1em 0;
+}
+
+.spec-chaper table.index td,
+.spec-chaper table.index th {
+  padding: 0.4em;
+}
+
+.spec-chaper table.index tr:hover td:not([rowspan]),
+.spec-chaper table.index tr:hover th:not([rowspan]) {
+  background: #f7f8f9;
+}
+
+/* The link in the first column in the property table (formerly a TD) */
+.spec-chaper table.index th:first-child a {
+  font-weight: bold;
+}
+
+/** Outdated warning **********************************************************/
+
+.spec-chaper a#outdated-note {
+  color: white;
+}
+
+.spec-chaper a#outdated-note:hover {
+  background: transparent;
+}
+
+.spec-chaper .outdated-spec {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.spec-chaper .outdated-warning {
+  position: fixed;
+  bottom: 50%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 50%;
+  background: maroon;
+  color: white;
+  border-radius: 1em;
+  box-shadow: 0 0 1em red;
+  padding: 2em;
+  text-align: center;
+  z-index: 2;
+}
+
+.spec-chaper .edited-rec-warning {
+  background: darkorange;
+  box-shadow: 0 0 1em;
+}
+
+.spec-chaper .outdated-warning button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  border: 0;
+  padding: 0.25em 0.5em;
+  background: transparent;
+  color: white;
+  font: 1em sans-serif;
+  text-align: center;
+}
+
+.spec-chaper .outdated-warning span {
+  display: block;
+}
+
+.spec-chaper .outdated-collapsed {
+  bottom: 0;
+  border-radius: 0;
+  width: 100%;
+  padding: 0;
+}
+
+/******************************************************************************/
+/*                             Overflow Control                               */
+/******************************************************************************/
+
+.spec-chapter .figure .caption,
+.spec-chapter .sidefigure .caption,
+.spec-chapter figcaption {
+  /* in case figure is overlarge, limit caption to 50em */
+  max-width: 50rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.spec-chapter .overlarge {
+  /* Magic to create good item positioning:
+       "content column" is 50ems wide at max; less on smaller screens.
+       Extra space (after ToC + content) is empty on the right.
+
+       1. When item < content column, centers item in column.
+       2. When content < item < available, left-aligns.
+       3. When item > available, fills available and is scrollable.
+    */
+  display: grid;
+  grid-template-columns: minmax(0, 50em);
+}
+.spec-chapter .overlarge > table {
+  /* limit preferred width of table */
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 55em) {
+  .spec-chapter .overlarge {
+    margin-right: calc(13px + 26.5rem - 50vw);
+    max-width: none;
+  }
+}
+@media screen and (min-width: 78em) {
+  .spec-chapter:not(.toc-inline) .overlarge {
+    /* 30.5em body padding 50em content area */
+    margin-right: calc(40em - 50vw) !important;
+  }
+}
+@media screen and (min-width: 90em) {
+  .spec-chapter:not(.toc-inline) .overlarge {
+    /* 4em html margin 30.5em body padding 50em content area */
+    margin-right: calc(84.5em - 100vw) !important;
+  }
+}
+
+@media not print {
+  .spec-chapter .overlarge {
+    overflow-x: auto;
+    /* See Lea Verou's explanation background-attachment:
+         * http://lea.verou.me/2012/04/background-attachment-local/
+         *
+        background: top left  / 4em 100% linear-gradient(to right,  #ffffff, rgba(255, 255, 255, 0)) local,
+                    top right / 4em 100% linear-gradient(to left, #ffffff, rgba(255, 255, 255, 0)) local,
+                    top left  / 1em 100% linear-gradient(to right,  #c3c3c5, rgba(195, 195, 197, 0)) scroll,
+                    top right / 1em 100% linear-gradient(to left, #c3c3c5, rgba(195, 195, 197, 0)) scroll,
+                    white;
+        background-repeat: no-repeat;
+        */
+  }
+}
